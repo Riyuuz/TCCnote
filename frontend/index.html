@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CatatanKu — Notes App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background decoration -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <div class="app-wrapper">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <span class="brand-icon">📝</span>
+          <h1 class="brand-name">CatatanKu</h1>
+        </div>
+        <p class="brand-tagline">Simpan setiap pikiran, temukan kembali kapan saja.</p>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- FORM PANEL -->
+      <section class="form-panel" id="formPanel">
+        <div class="panel-label" id="formLabel">Catatan Baru</div>
+
+        <div class="form-group">
+          <label for="inputJudul">Judul</label>
+          <input
+            type="text"
+            id="inputJudul"
+            placeholder="Judul catatan…"
+            autocomplete="off"
+            maxlength="255"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="inputIsi">Isi Catatan</label>
+          <textarea
+            id="inputIsi"
+            placeholder="Tulis isi catatan di sini…"
+            rows="5"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" id="btnSimpan" onclick="simpanCatatan()">
+            <span class="btn-icon">＋</span> Simpan Catatan
+          </button>
+          <button class="btn btn-ghost" id="btnBatal" onclick="batalEdit()" style="display:none">
+            Batal
+          </button>
+        </div>
+
+        <div id="alertBox" class="alert" style="display:none"></div>
+      </section>
+
+      <!-- NOTES LIST -->
+      <section class="notes-section">
+        <div class="notes-header">
+          <h2 class="notes-title">Daftar Catatan</h2>
+          <span class="notes-count" id="notesCount">0 catatan</span>
+        </div>
+
+        <div id="loadingState" class="empty-state">
+          <div class="spinner"></div>
+          <p>Memuat catatan…</p>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none">
+          <div class="empty-icon">🗒️</div>
+          <p>Belum ada catatan.<br />Buat catatan pertamamu!</p>
+        </div>
+
+        <div class="notes-grid" id="notesGrid"></div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Tugas 2 — Aplikasi Notes Fullstack &middot; Express.js + MySQL + GCP</p>
+    </footer>
+
+  </div>
+
+  <!-- MODAL KONFIRMASI HAPUS -->
+  <div class="modal-overlay" id="modalOverlay" onclick="tutupModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-icon">🗑️</div>
+      <h3 class="modal-title">Hapus Catatan?</h3>
+      <p class="modal-body">Tindakan ini tidak dapat dibatalkan.</p>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="btnKonfirmasiHapus">Ya, Hapus</button>
+        <button class="btn btn-ghost" onclick="tutupModal()">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
