@@ -3,7 +3,7 @@
    Komunikasi dengan Express.js backend API
 =================================================== */
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'https://notes-backend-420166052416.asia-southeast2.run.app/api';
 
 let editId = null;
 let hapusId = null;
@@ -40,23 +40,23 @@ function setLoadingButton(loading) {
 // ── Fetch semua catatan ───────────────────────────
 
 async function muatCatatan() {
-  const grid    = document.getElementById('notesGrid');
+  const grid = document.getElementById('notesGrid');
   const loading = document.getElementById('loadingState');
-  const empty   = document.getElementById('emptyState');
-  const count   = document.getElementById('notesCount');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('notesCount');
 
   grid.innerHTML = '';
   loading.style.display = 'block';
-  empty.style.display   = 'none';
+  empty.style.display = 'none';
 
   try {
-    const res  = await fetch(`${API_BASE}/notes`);
+    const res = await fetch(`${API_BASE}/notes`);
     const json = await res.json();
     loading.style.display = 'none';
 
     if (!json.success || json.data.length === 0) {
       empty.style.display = 'block';
-      count.textContent   = '0 catatan';
+      count.textContent = '0 catatan';
       return;
     }
 
@@ -84,7 +84,7 @@ async function muatCatatan() {
 
   } catch (err) {
     loading.style.display = 'none';
-    empty.style.display   = 'block';
+    empty.style.display = 'block';
     empty.querySelector('p').innerHTML = '⚠️ Gagal memuat catatan.<br/>Pastikan server backend berjalan.';
     console.error(err);
   }
@@ -94,18 +94,18 @@ async function muatCatatan() {
 
 async function simpanCatatan() {
   const judul = document.getElementById('inputJudul').value.trim();
-  const isi   = document.getElementById('inputIsi').value.trim();
+  const isi = document.getElementById('inputIsi').value.trim();
 
   if (!judul) return tampilAlert('Judul tidak boleh kosong!', 'error');
-  if (!isi)   return tampilAlert('Isi catatan tidak boleh kosong!', 'error');
+  if (!isi) return tampilAlert('Isi catatan tidak boleh kosong!', 'error');
 
   setLoadingButton(true);
 
   try {
-    const url    = editId ? `${API_BASE}/notes/${editId}` : `${API_BASE}/notes`;
+    const url = editId ? `${API_BASE}/notes/${editId}` : `${API_BASE}/notes`;
     const method = editId ? 'PUT' : 'POST';
 
-    const res  = await fetch(url, {
+    const res = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ judul, isi }),
@@ -132,7 +132,7 @@ async function simpanCatatan() {
 function mulaiEdit(id, judul, isi) {
   editId = id;
   document.getElementById('inputJudul').value = judul;
-  document.getElementById('inputIsi').value   = isi;
+  document.getElementById('inputIsi').value = isi;
   document.getElementById('formLabel').textContent = '✏️ Edit Catatan';
   document.getElementById('btnSimpan').innerHTML = '<span class="btn-icon">💾</span> Perbarui';
   document.getElementById('btnBatal').style.display = 'inline-flex';
@@ -149,7 +149,7 @@ function batalEdit() {
 function resetForm() {
   editId = null;
   document.getElementById('inputJudul').value = '';
-  document.getElementById('inputIsi').value   = '';
+  document.getElementById('inputIsi').value = '';
   document.getElementById('formLabel').textContent = 'Catatan Baru';
   document.getElementById('btnSimpan').innerHTML = '<span class="btn-icon">＋</span> Simpan Catatan';
   document.getElementById('btnBatal').style.display = 'none';
@@ -175,7 +175,7 @@ function tutupModal() {
 
 async function hapusCatatan(id) {
   try {
-    const res  = await fetch(`${API_BASE}/notes/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${API_BASE}/notes/${id}`, { method: 'DELETE' });
     const json = await res.json();
 
     if (json.success) {

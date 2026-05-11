@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────────────────
+# app.yaml — Konfigurasi App Engine untuk Frontend
+# Service: frontend (static HTML + JS + CSS)
+# Runtime: Python 3.12 (digunakan sebagai static file server)
+# ─────────────────────────────────────────────────────────
+
+runtime: python312
+service: rizal-frontend
+
+# Instance class F1 (gratis / hemat biaya)
+instance_class: F1
+
+# Tidak butuh auto-scaling besar untuk static frontend
+automatic_scaling:
+  min_idle_instances: 0
+  max_idle_instances: 1
+  min_pending_latency: 30ms
+  max_pending_latency: automatic
+  max_concurrent_requests: 50
+
+# Handler untuk static files
+handlers:
+  # style.css
+  - url: /style.css
+    static_files: style.css
+    upload: style\.css
+
+  # app.js (frontend JS)
+  - url: /app.js
+    static_files: app.js
+    upload: app\.js
+
+  # Root — sajikan index.html
+  - url: /.*
+    static_files: index.html
+    upload: index\.html
+
+

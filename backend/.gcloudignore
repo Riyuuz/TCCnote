@@ -1,0 +1,17 @@
+.gcloudignore
+.git
+.gitignore
+
+# Node modules (akan di-install otomatis oleh Cloud Build)
+node_modules/
+
+# Environment file (gunakan --set-env-vars saat deploy)
+.env
+.env.*
+
+# File tidak perlu
+*.log
+*.sql
+*.md
+.vscode/
+.idea/

@@ -4,12 +4,39 @@ const cors = require('cors');
 const mysql = require('mysql2/promise');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
-// Middleware
-app.use(cors());
+// ─── CORS Configuration ───────────────────────────────
+// Izinkan request dari frontend App Engine dan localhost (development)
+const allowedOrigins = [
+  // ⚠️ GANTI dengan URL App Engine frontend kamu setelah deploy!
+  // Contoh: 'https://notes-frontend-dot-PROJECT_ID.appspot.com'
+  process.env.FRONTEND_URL || 'https://PROJECT_ID.appspot.com',
+  'http://localhost:5500',   // Live Server VS Code
+  'http://localhost:3000',   // Dev lokal
+  'http://127.0.0.1:5500',
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Izinkan request tanpa origin (Postman, curl, dll)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    // Izinkan semua subdomain *.appspot.com dan *.run.app
+    if (/\.appspot\.com$/.test(origin) || /\.run\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+
 app.use(express.json());
-app.use(express.static('../frontend'));
+// ⚠️ Static file dihapus — frontend dideploy terpisah di App Engine
 
 // Database connection pool
 const pool = mysql.createPool({
